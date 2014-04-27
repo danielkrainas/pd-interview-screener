@@ -13,7 +13,22 @@
 // see upperBound.test.coffee for more examples!  Write riley@peardeck.com if anything is unclear.
 
 module.exports = function upperBound(guess) {
-
-    throw new Error('Not implemented yet :(');
-    
+	// handle all the base patterns
+    if(guess <= 2) {
+		return 2;
+	} else if(guess <= 5) {
+		return 5;
+	} else if(guess <= 10) {
+		return 10;
+	}
+	
+	// some craftiness to handle N length numbers.
+	// get the placeholder base (10, 100, 1000, 10000, etc) by deriving from the guess's scientific notation.
+	var base = Math.pow(10, parseInt(guess.toExponential().split('+')[1]));
+	
+	// strip the guess down to a single digit before the decimal (125 becomes 1.25) and recurse.
+	var result = upperBound(guess / base);
+	
+	// take the result and apply the base.
+	return result * base;
 };
